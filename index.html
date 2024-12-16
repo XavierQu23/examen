@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD de Nombres de Usuario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .actions button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .actions .edit {
+            background-color: #FFC107;
+            color: white;
+        }
+
+        .actions .delete {
+            background-color: #DC3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CRUD de Nombres de Usuario</h1>
+        <div class="form-group">
+            <label for="username">Nombre de Usuario</label>
+            <input type="text" id="username" placeholder="Ingrese el nombre de usuario">
+        </div>
+        <div class="form-group">
+            <button id="addUser">Agregar Usuario</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre de Usuario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="userTable">
+                <!-- Los usuarios se agregarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let userId = 1;
+        const userTable = document.getElementById('userTable');
+        const usernameInput = document.getElementById('username');
+        const addUserButton = document.getElementById('addUser');
+
+        // Agregar usuario
+        addUserButton.addEventListener('click', () => {
+            const username = usernameInput.value.trim();
+            if (username === '') {
+                alert('Por favor, ingrese un nombre de usuario.');
+                return;
+            }
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${userId++}</td>
+                <td>${username}</td>
+                <td class="actions">
+                    <button class="edit" onclick="editUser(this)">Editar</button>
+                    <button class="delete" onclick="deleteUser(this)">Eliminar</button>
+                </td>
+            `;
+            userTable.appendChild(row);
+            usernameInput.value = '';
+        });
+
+        // Editar usuario
+        function editUser(button) {
+            const row = button.parentElement.parentElement;
+            const usernameCell = row.children[1];
+            const newUsername = prompt('Editar nombre de usuario:', usernameCell.textContent);
+            if (newUsername !== null && newUsername.trim() !== '') {
+                usernameCell.textContent = newUsername.trim();
+            }
+        }
+
+        // Eliminar usuario
+        function deleteUser(button) {
+            const row = button.parentElement.parentElement;
+            userTable.removeChild(row);
+        }
+    </script>
+</body>
+</html>
